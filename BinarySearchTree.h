@@ -28,6 +28,10 @@ namespace Containers
         void clear(TreeNode* currNode);                             // Полная очистка дерева / поддерева.
 
 
+        /*  >>> Вспомогательные защищенные методы для получения информации о дереве. <<<  */
+        size_t height(TreeNode* currNode) const;
+
+
         /*  >>> Вспомогательные защищенные методы для осуществления поиска в дереве. <<<  */
         bool contains(TreeNode* currNode, const T& value) const;    // Проверка наличия элемента в дереве.
 
@@ -67,6 +71,7 @@ namespace Containers
 
         /*  >>> Публичные методы для получения информации о дереве. <<<  */
         bool isEmpty() const;                                       // Проверка, пустое ли дерево.
+        size_t height() const;                                      // Возвращает текущую высоту дерева.
         size_t size() const;                                        // Возвращает количество узлов в дереве.
 
 
@@ -142,6 +147,19 @@ namespace Containers
 
         // 3. Удаляю текущий узел.
         delete currNode;
+    }
+
+
+
+    /*  >>> Вспомогательные защищенные методы для получения информации о дереве. <<<  */
+    template<typename T>
+    size_t BinarySearchTree<T>::height(TreeNode* currNode) const
+    {
+        // 1. Базовый случай: если узел пустой - высота равна 0.
+        if (currNode == nullptr) { return 0; }
+
+        // 2. Рекурсивный случай: высота текущего узла равна 1 + максимальная высота его поддеревьев.
+        return 1 + std::max(height(currNode->left), height(currNode->right));
     }
 
 
@@ -421,6 +439,11 @@ namespace Containers
     template<typename T>
     bool BinarySearchTree<T>::isEmpty() const {
         return root == nullptr && sizeOfTree == 0;
+    }
+
+    template<typename T>
+    size_t BinarySearchTree<T>::height() const {
+        return height(root);
     }
 
     template<typename T>
